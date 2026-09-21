@@ -66,6 +66,10 @@ async def get_browser():
             args=[
                 "--disable-blink-features=AutomationControlled",
                 "--no-sandbox",
+                "--disable-setuid-sandbox",
+                "--disable-dev-shm-usage",
+                "--disable-gpu",
+                "--no-first-run",
                 "--disable-infobars"
             ]
         )
@@ -77,17 +81,30 @@ async def health_check():
     return {"status": "ok", "active_sessions": len(active_sessions)}
 
 
+@app.get("/api/debug-browser")
+async def debug_browser():
+    try:
+        browser = await get_browser()
+        version = browser.version
+        return {"status": "ok", "chromium_version": version}
+    except Exception as e:
+        import traceback
+        return {"status": "error", "error": str(e), "traceback": traceback.format_exc()}
+
+
 @app.post("/api/captcha")
 async def get_captcha(req: CaptchaRequest):
     await cleanup_expired_sessions()
-    browser = await get_browser()
-
-    context = await browser.new_context(
-        user_agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36",
-        locale="ar-YE",
-        viewport={"width": 1280, "height": 720}
-    )
-    page = await context.new_page()
+    try:
+        browser = await get_browser()
+        context = await browser.new_context(
+            user_agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36",
+            locale="ar-YE",
+            viewport={"width": 1280, "height": 720}
+        )
+        page = await context.new_page()
+    except Exception as init_err:
+        raise HTTPException(status_code=500, detail=f"Browser launch error: {str(init_err)}")
 
     try:
         login_url = "https://adsl.yemen.net.ye/login"
