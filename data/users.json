@@ -1,0 +1,28 @@
+[
+  {
+    "id": "usr_777000111",
+    "phone": "777000111",
+    "name": "النقيب للمعلومات",
+    "password_hash": "8d969eef6ecad3c29a3a629280e686cf0c3f5d5a86aff3ca12020c923adc6c92",
+    "role": "admin",
+    "created_at": "2026-01-01T00:00:00Z"
+  },
+  {
+    "id": "usr_11549025",
+    "phone": "11549025",
+    "name": "مستخدم (11549025)",
+    "password_hash": "8d969eef6ecad3c29a3a629280e686cf0c3f5d5a86aff3ca12020c923adc6c92",
+    "role": "user",
+    "created_at": "2026-09-21T00:36:44.479Z",
+    "updated_at": "2026-09-21T00:36:44.479Z"
+  },
+  {
+    "id": "usr_777080877",
+    "phone": "777080877",
+    "name": "مستخدم (777080877)",
+    "password_hash": "8d969eef6ecad3c29a3a629280e686cf0c3f5d5a86aff3ca12020c923adc6c92",
+    "role": "user",
+    "created_at": "2026-09-21T05:54:53.077Z",
+    "updated_at": "2026-09-21T05:54:53.077Z"
+  }
+]

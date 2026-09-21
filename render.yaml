@@ -1,0 +1,10 @@
+services:
+  - type: web
+    name: yemennet-bridge
+    runtime: docker
+    dockerfilePath: Dockerfile
+    plan: free
+    region: frankfurt
+    envVars:
+      - key: PORT
+        value: 10000

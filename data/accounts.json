@@ -1,0 +1,61 @@
+[
+  {
+    "id": "1",
+    "user_id": "user_naqib_01",
+    "label": "المنزل الرئيسي - ADSL",
+    "username": "01234567",
+    "balance": "46.59 GB",
+    "expiry": "25/10/2026",
+    "status": "نشط 🟢",
+    "type": "ADSL",
+    "speed": "8 Mbps",
+    "ip": "10.120.45.18",
+    "created_at": "2026-01-10T10:00:00Z",
+    "updated_at": "2026-09-21T05:58:09.987Z",
+    "last_synced": "2026-09-21T05:58:09.986Z"
+  },
+  {
+    "id": "2",
+    "user_id": "user_naqib_01",
+    "label": "المكتب - يمن فورجي 4G",
+    "username": "712345678",
+    "balance": "98.26 GB",
+    "expiry": "05/11/2026",
+    "status": "نشط 🟢",
+    "type": "4G",
+    "speed": "30 Mbps",
+    "ip": "10.88.12.9",
+    "created_at": "2026-02-15T12:30:00Z",
+    "updated_at": "2026-09-21T05:58:10.026Z",
+    "last_synced": "2026-09-21T05:58:10.010Z"
+  },
+  {
+    "id": "3",
+    "user_id": "user_naqib_01",
+    "label": "معرض التقنية - ADSL",
+    "username": "01889900",
+    "balance": "0.00 GB",
+    "expiry": "24/09/2026",
+    "status": "منتهي 🔴",
+    "type": "ADSL",
+    "speed": "4 Mbps",
+    "ip": "10.110.33.2",
+    "created_at": "2026-03-01T08:15:00Z",
+    "updated_at": "2026-09-21T01:36:08.768Z",
+    "last_synced": "2026-09-21T01:36:08.767Z"
+  },
+  {
+    "id": "4",
+    "user_id": "user_naqib_01",
+    "label": "المستودع - ADSL",
+    "username": "01554433",
+    "balance": "0.00 GB",
+    "expiry": "12/09/2026",
+    "status": "منتهي 🔴",
+    "type": "ADSL",
+    "speed": "2 Mbps",
+    "ip": "غير متصل",
+    "created_at": "2026-01-20T14:20:00Z",
+    "updated_at": "2026-09-20T23:40:19.135Z"
+  }
+]

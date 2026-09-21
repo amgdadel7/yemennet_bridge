@@ -1,0 +1,154 @@
+[
+  {
+    "id": "1789949589076",
+    "account_id": "1",
+    "date": "2026-09-21",
+    "displayDate": "٢١ سبتمبر",
+    "balance_gb": 46.59,
+    "usage_gb": 18.81
+  },
+  {
+    "id": "1789949589091",
+    "account_id": "2",
+    "date": "2026-09-21",
+    "displayDate": "٢١ سبتمبر",
+    "balance_gb": 98.26,
+    "usage_gb": 19.99
+  },
+  {
+    "id": "1789949589107",
+    "account_id": "3",
+    "date": "2026-09-21",
+    "displayDate": "٢١ سبتمبر",
+    "balance_gb": 0,
+    "usage_gb": 7.72
+  },
+  {
+    "id": "1789949779003_13",
+    "date": "2026-09-08",
+    "displayDate": "٨ سبتمبر",
+    "balance_gb": 22.5,
+    "usage_gb": 3.4,
+    "account_id": "4"
+  },
+  {
+    "id": "1789949779009_12",
+    "date": "2026-09-09",
+    "displayDate": "٩ سبتمبر",
+    "balance_gb": 21.06,
+    "usage_gb": 2.1,
+    "account_id": "4"
+  },
+  {
+    "id": "1789949779009_11",
+    "date": "2026-09-10",
+    "displayDate": "١٠ سبتمبر",
+    "balance_gb": 18.9,
+    "usage_gb": 3.3,
+    "account_id": "4"
+  },
+  {
+    "id": "1789949779009_10",
+    "date": "2026-09-11",
+    "displayDate": "١١ سبتمبر",
+    "balance_gb": 17.1,
+    "usage_gb": 2,
+    "account_id": "4"
+  },
+  {
+    "id": "1789949779009_9",
+    "date": "2026-09-12",
+    "displayDate": "١٢ سبتمبر",
+    "balance_gb": 15.66,
+    "usage_gb": 3.2,
+    "account_id": "4"
+  },
+  {
+    "id": "1789949779009_8",
+    "date": "2026-09-13",
+    "displayDate": "١٣ سبتمبر",
+    "balance_gb": 13.5,
+    "usage_gb": 1.9,
+    "account_id": "4"
+  },
+  {
+    "id": "1789949779009_7",
+    "date": "2026-09-14",
+    "displayDate": "١٤ سبتمبر",
+    "balance_gb": 11.7,
+    "usage_gb": 3.1,
+    "account_id": "4"
+  },
+  {
+    "id": "1789949779009_6",
+    "date": "2026-09-15",
+    "displayDate": "١٥ سبتمبر",
+    "balance_gb": 10.26,
+    "usage_gb": 1.8,
+    "account_id": "4"
+  },
+  {
+    "id": "1789949779009_5",
+    "date": "2026-09-16",
+    "displayDate": "١٦ سبتمبر",
+    "balance_gb": 8.1,
+    "usage_gb": 3,
+    "account_id": "4"
+  },
+  {
+    "id": "1789949779009_4",
+    "date": "2026-09-17",
+    "displayDate": "١٧ سبتمبر",
+    "balance_gb": 6.3,
+    "usage_gb": 1.7,
+    "account_id": "4"
+  },
+  {
+    "id": "1789949779009_3",
+    "date": "2026-09-18",
+    "displayDate": "١٨ سبتمبر",
+    "balance_gb": 4.86,
+    "usage_gb": 2.9,
+    "account_id": "4"
+  },
+  {
+    "id": "1789949779009_2",
+    "date": "2026-09-19",
+    "displayDate": "١٩ سبتمبر",
+    "balance_gb": 2.7,
+    "usage_gb": 1.6,
+    "account_id": "4"
+  },
+  {
+    "id": "1789949779009_1",
+    "date": "2026-09-20",
+    "displayDate": "٢٠ سبتمبر",
+    "balance_gb": 0.9,
+    "usage_gb": 2.8,
+    "account_id": "4"
+  },
+  {
+    "id": "1789949779010_0",
+    "date": "2026-09-21",
+    "displayDate": "٢١ سبتمبر",
+    "balance_gb": 0,
+    "usage_gb": 1.5,
+    "account_id": "4"
+  },
+  {
+    "id": "1789954446648",
+    "account_id": "1789953208833",
+    "date": "2026-09-21",
+    "displayDate": "٢١ سبتمبر",
+    "balance_gb": 79.09,
+    "usage_gb": 21.96
+  },
+  {
+    "id": "1789967086100",
+    "account_id": "1789966492710",
+    "date": "2026-09-21",
+    "displayDate": "٢١ سبتمبر",
+    "balance_gb": 89.73,
+    "usage_gb": 0
+  }
+]
