@@ -108,8 +108,18 @@ async def get_captcha(req: CaptchaRequest):
 
     try:
         login_url = "https://adsl.yemen.net.ye/login"
-        # Go to login page and wait for SafeLine WAF redirect
-        await page.goto(login_url, wait_until="networkidle", timeout=30000)
+        # Go to login page and wait for DOM content
+        try:
+            await page.goto(login_url, wait_until="domcontentloaded", timeout=35000)
+        except Exception as nav_err:
+            print(f"Navigation warning during goto: {nav_err}")
+
+        # Wait for captcha element or SafeLine challenge
+        try:
+            captcha_img = await page.wait_for_selector("#capti", timeout=20000)
+        except Exception:
+            await page.wait_for_timeout(3000)
+            captcha_img = await page.wait_for_selector("#capti", timeout=10000)
 
         # Fill username and password
         if req.username and await page.query_selector("#Username"):
@@ -117,8 +127,6 @@ async def get_captcha(req: CaptchaRequest):
         if req.password and await page.query_selector("#Password"):
             await page.fill("#Password", str(req.password).strip())
 
-        # Wait for captcha element
-        captcha_img = await page.wait_for_selector("#capti", timeout=15000)
         if not captcha_img:
             raise HTTPException(status_code=500, detail="لم يتم العثور على صورة الكابتشا في صفحة يمن نت")
 
@@ -169,9 +177,12 @@ async def verify_captcha(req: VerifyRequest):
             await page.keyboard.press("Enter")
 
         try:
-            await page.wait_for_load_state("networkidle", timeout=15000)
+            await page.wait_for_url("**/acct*", timeout=15000)
         except Exception:
-            pass
+            try:
+                await page.wait_for_load_state("domcontentloaded", timeout=8000)
+            except Exception:
+                pass
 
         # Check if redirected to /acct
         current_url = page.url
