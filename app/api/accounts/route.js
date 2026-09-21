@@ -1,13 +1,39 @@
 import { NextResponse } from 'next/server';
 import { AccountsDb, ActivityDb } from '../../../lib/server/db';
 import { getSessionUser } from '../../../lib/server/auth';
+import { supabaseAdmin } from '../../../lib/server/supabaseAdmin';
 
 export async function GET(request) {
   try {
     const { searchParams } = new URL(request.url);
     const session = getSessionUser(request);
-    const userId = searchParams.get('user_id') || session?.id;
+    const userId = searchParams.get('user_id') || searchParams.get('userId') || session?.id;
     const id = searchParams.get('id');
+
+    if (supabaseAdmin) {
+      try {
+        if (id) {
+          const { data, error } = await supabaseAdmin
+            .from('accounts')
+            .select('*')
+            .eq('id', id);
+          if (!error && data && data.length > 0) {
+            return NextResponse.json({ data, error: null });
+          }
+        } else {
+          let query = supabaseAdmin.from('accounts').select('*');
+          if (userId) {
+            query = query.eq('user_id', userId);
+          }
+          const { data, error } = await query.order('created_at', { ascending: false });
+          if (!error && data && data.length > 0) {
+            return NextResponse.json({ data, error: null });
+          }
+        }
+      } catch (err) {
+        console.warn('Supabase accounts query failed, falling back:', err.message);
+      }
+    }
 
     if (id) {
       const acc = AccountsDb.getById(id);
@@ -36,10 +62,46 @@ export async function POST(request) {
       );
     }
 
-    const created = AccountsDb.create({
-      ...body,
-      user_id: body.user_id || session?.id || 'usr_777000111',
-    });
+    const targetUserId = body.user_id || session?.id || 'usr_11549025';
+    const newId = body.id || Date.now().toString();
+
+    let created = null;
+    if (supabaseAdmin) {
+      try {
+        const row = {
+          id: newId,
+          user_id: targetUserId,
+          label: body.label || 'اشتراك جديد',
+          username: body.username,
+          password: body.password || '',
+          balance: body.balance || '0.00 GB',
+          expiry: body.expiry || '30/11/2026',
+          status: body.status || 'نشط 🟢',
+          type: body.type || (body.username?.startsWith('7') ? '4G' : 'ADSL'),
+          speed: body.speed || '8 Mbps',
+          ip: body.ip || '10.140.22.8',
+          subscriber_name: body.subscriber_name || null,
+          package_name: body.package_name || null,
+          session_cookie: body.session_cookie || null,
+          created_at: new Date().toISOString(),
+          updated_at: new Date().toISOString(),
+        };
+        const { data, error } = await supabaseAdmin.from('accounts').insert(row).select();
+        if (!error && data && data.length > 0) {
+          created = data[0];
+        }
+      } catch (e) {
+        console.warn('Supabase account insert error:', e.message);
+      }
+    }
+
+    if (!created) {
+      created = AccountsDb.create({
+        ...body,
+        id: newId,
+        user_id: targetUserId,
+      });
+    }
 
     ActivityDb.log({
       user_id: created.user_id,
@@ -70,7 +132,26 @@ export async function PUT(request) {
       );
     }
 
-    const updated = AccountsDb.update(id, updates);
+    let updated = null;
+    if (supabaseAdmin) {
+      try {
+        const { data, error } = await supabaseAdmin
+          .from('accounts')
+          .update({ ...updates, updated_at: new Date().toISOString() })
+          .eq('id', id)
+          .select();
+        if (!error && data && data.length > 0) {
+          updated = data[0];
+        }
+      } catch (e) {
+        console.warn('Supabase account update error:', e.message);
+      }
+    }
+
+    if (!updated) {
+      updated = AccountsDb.update(id, updates);
+    }
+
     if (!updated) {
       return NextResponse.json({ data: null, error: 'الحساب غير موجود' }, { status: 404 });
     }
@@ -94,6 +175,14 @@ export async function DELETE(request) {
         { data: null, error: 'معرف الحساب مطلوب' },
         { status: 400 }
       );
+    }
+
+    if (supabaseAdmin) {
+      try {
+        await supabaseAdmin.from('accounts').delete().eq('id', id);
+      } catch (e) {
+        console.warn('Supabase account delete error:', e.message);
+      }
     }
 
     const acc = AccountsDb.getById(id);
