@@ -8,16 +8,18 @@ const BRIDGE_URL = process.env.YEMENNET_BRIDGE_URL || 'http://127.0.0.1:5055';
 const PYTHON_PATH = process.env.PYTHON_PATH || 'C:\\Users\\Amjad Alhakimi\\anaconda3\\envs\\environment-gpu\\python.exe';
 const BRIDGE_SCRIPT = path.join(process.cwd(), 'scripts', 'yemennet_bridge.py');
 
+const isRemoteBridge = !BRIDGE_URL.includes('127.0.0.1') && !BRIDGE_URL.includes('localhost');
+
 let isSpawning = false;
 
 async function checkBridgeHealth() {
   try {
-    const controller = new AbortController();
-    const timeout = setTimeout(() => controller.abort(), 1200);
-    const res = await fetch(`${BRIDGE_URL}/api/health`, { signal: controller.signal });
-    clearTimeout(timeout);
+    const timeoutMs = isRemoteBridge ? 10000 : 2500;
+    const res = await fetch(`${BRIDGE_URL}/api/health`, {
+      signal: AbortSignal.timeout(timeoutMs),
+    });
     return res.ok;
-  } catch {
+  } catch (e) {
     return false;
   }
 }
@@ -26,8 +28,12 @@ async function ensureBridgeRunning() {
   const healthy = await checkBridgeHealth();
   if (healthy) return true;
 
+  // If pointing to a remote bridge (e.g. Render), don't try local child_process spawn
+  if (isRemoteBridge) {
+    return false;
+  }
+
   if (isSpawning) {
-    // Wait briefly for existing spawn
     await new Promise((r) => setTimeout(r, 2000));
     return await checkBridgeHealth();
   }
@@ -41,7 +47,6 @@ async function ensureBridgeRunning() {
     });
     child.unref();
 
-    // Poll for up to 6 seconds until ready
     for (let i = 0; i < 12; i++) {
       await new Promise((r) => setTimeout(r, 500));
       if (await checkBridgeHealth()) {
@@ -50,7 +55,7 @@ async function ensureBridgeRunning() {
       }
     }
   } catch (err) {
-    console.error('Failed to spawn yemennet_bridge:', err);
+    console.error('Failed to spawn local yemennet_bridge:', err);
   } finally {
     isSpawning = false;
   }
