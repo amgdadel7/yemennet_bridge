@@ -308,11 +308,15 @@ async def sync_with_session(req: SessionSyncRequest):
     page = await context.new_page()
 
     try:
-        await page.goto("https://adsl.yemen.net.ye/acct", wait_until="networkidle", timeout=30000)
+        try:
+            await page.goto("https://adsl.yemen.net.ye/acct", wait_until="domcontentloaded", timeout=35000)
+            await page.wait_for_timeout(2500)
+        except Exception as nav_err:
+            print(f"Navigation warning: {nav_err}")
 
         # Check if session redirected to /login (meaning expired)
         current_url = page.url
-        if "/acct" not in current_url:
+        if "/acct" not in current_url and "/ar/user_main" not in current_url:
             await page.close()
             await context.close()
             return {
@@ -419,7 +423,24 @@ async def sync_with_session(req: SessionSyncRequest):
         }
 
 
+@app.get("/api/check-network")
+async def check_network():
+    import urllib.request
+    results = {}
+    try:
+        req = urllib.request.Request(
+            "https://adsl.yemen.net.ye/acct",
+            headers={"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64)"}
+        )
+        with urllib.request.urlopen(req, timeout=12) as resp:
+            results["yemennet"] = {"status": resp.status, "ok": True}
+    except Exception as e:
+        results["yemennet"] = {"error": str(e), "ok": False}
+    return results
+
+
 if __name__ == "__main__":
+
     import uvicorn
     port = int(os.environ.get("PORT", os.environ.get("YEMENNET_BRIDGE_PORT", 5055)))
     host = os.environ.get("HOST", "0.0.0.0")
